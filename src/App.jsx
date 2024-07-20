@@ -1,30 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
 
 const App = () => {
-  const [playerName, setPlayerName] = useState('');
-  const [gameStarted, setGameStarted] = useState(false);
-  const [playerGameBoard, setPlayerGameBoard] = useState(Array(10).fill().map(() => Array(10).fill(0))); // set boards vacios
+  const [playerGameBoard, setPlayerGameBoard] = useState(Array(10).fill().map(() => Array(10).fill(0)));
   const [cpuGameBoard, setCpuGameBoard] = useState(Array(10).fill().map(() => Array(10).fill(0)));
   const [playerTurn, setPlayerTurn] = useState(true);
-  const [playerShips, setPlayerShips] = useState([]); //array the chips vacias
+  const [playerShips, setPlayerShips] = useState([]);
   const [cpuShips, setCpuShips] = useState([]);
   const [info, setInfo] = useState('');
-  const [turnDisplay, setTurnDisplay] = useState('Partida no iniciada.');
+  const [turnDisplay, setTurnDisplay] = useState('Arrastra tus piezas al tablero!');
   const gameBoardPlayerRef = useRef(null);
   const gameBoardCpuRef = useRef(null);
   const shipsRef = useRef(null);
 
-  //INICIO
-
   useEffect(() => {
-    if (gameStarted) {
-      placeCpuShips();
-    }
-  }, [gameStarted]);
+    placeCpuShips();
+  }, []);
 
-  //TABLEROS
-
-  const createBoard = (isPlayerBoard) => {
+  const createBoard = (squaresArray, isPlayerBoard) => {
     const board = [];
     for (let i = 0; i < 100; i++) {
       board.push(
@@ -32,7 +24,7 @@ const App = () => {
           key={i}
           data-id={i}
           className={`square ${isPlayerBoard ? 'player-board' : 'cpu-board'}`}
-          onDragOver={(e) => e.preventDefault()}
+          onDragOver={e => e.preventDefault()}
           onDrop={e => isPlayerBoard ? drop(e, playerGameBoard) : null}
         />
       );
@@ -40,7 +32,6 @@ const App = () => {
     return board;
   };
 
-  //valiacion ships en boards
   const isValidPlacement = (length, index, squares) => {
     const row = Math.floor(index / 10);
     const col = index % 10;
@@ -53,32 +44,23 @@ const App = () => {
     return true;
   };
 
-  // ships en playersboard
-  const placeShip = (ship, index, squares, gameBoard, shipsArray) => {
+  function placeShip(ship, index, squares, gameBoard, shipsArray) {
     const shipLength = parseInt(ship.dataset.length);
     const row = Math.floor(index / 10);
     const col = index % 10;
     const shipParts = [];
-  
+
     for (let i = 0; i < shipLength; i++) {
-      const square = squares[index + i];
-      if (square) {
+        const square = squares[index + i];
         square.classList.add('taken', 'player-ship');
         gameBoard[row][col + i] = 1;
         shipParts.push({ row, col: col + i, hit: false });
-      }
     }
-  
-    // Update ships array and game board
-    setPlayerShips(prevShips => [...prevShips, shipParts]);
-    setPlayerGameBoard([...gameBoard]);
-  
-    // Remove ship from the prop container
-    document.getElementById('game-props').removeChild(ship);
-  };
-  
 
-  //cpu player
+    shipsArray.push(shipParts);
+    document.getElementById('game-props').removeChild(ship);
+}
+
   const placeCpuShips = () => {
     const shipLengths = [5, 3, 3, 2, 1];
     const newCpuShips = [];
@@ -167,33 +149,24 @@ const App = () => {
     }
   };
 
-  //DROP SHIPS
   const drop = (e, playerGameBoard) => {
     e.preventDefault();
     const shipId = e.dataTransfer.getData('text');
     const ship = document.getElementById(shipId);
-    const target = e.target;
+    const index = parseInt(e.target.dataset.id);
     
-    if (target && target.classList.contains('square')) {
-      const index = parseInt(target.dataset.id);
-      const shipLength = parseInt(ship.dataset.length);
-      const targetSquares = Array.from(target.parentNode.children);
-  
-      if (ship && !isNaN(index) && isValidPlacement(shipLength, index, targetSquares)) {
-        placeShip(ship, index, targetSquares, playerGameBoard, playerShips);
-      } else {
-        setInfo('Invalid placement. Try again.');
-      }
+    // Ensure the target element is a valid drop location
+    if (isValidPlacement(parseInt(ship.dataset.length), index, Array.from(e.target.parentNode.children))) {
+        placeShip(ship, index, Array.from(e.target.parentNode.children), playerGameBoard, playerShips);
     } else {
-      setInfo('Invalid drop target. Try again.');
+        setInfo('Invalid placement. Try again.');
     }
-  };
+};
 
 const handleDragStart = (e) => {
     e.dataTransfer.setData('text', e.target.id);
 };
 
-// Add drag event listeners to ship elements
 useEffect(() => {
     const ships = document.querySelectorAll('.ship');
     ships.forEach(ship => {
@@ -207,7 +180,7 @@ useEffect(() => {
     };
 }, []);
 
-  const restartGame = () => {
+const restartGame = () => {
     Array.from(gameBoardPlayerRef.current.children).forEach(square => {
       square.classList.remove('hit', 'miss', 'taken', 'player-ship', 'sunk');
     });
@@ -228,73 +201,44 @@ useEffect(() => {
     setPlayerTurn(true);
   };
 
-  const handleNameChange = (e) => {
-    setPlayerName(e.target.value);
-  };
-
-  const handleStartGame = () => {
-    if (playerName.trim() !== '') {
-      setGameStarted(true);
-    } else {
-      setInfo('Please enter a name to start the game.');
-    }
-  };
 
   return (
     <div className="wrapper">
       <h1>BATTLESHIP: COLOR WARS</h1>
-      {!gameStarted ? (
-        <div className="start-screen">
-          <h2>Hola, ¿Cómo te llamas?</h2>
-          <input
-            type="text"
-            value={playerName}
-            onChange={handleNameChange}
-            placeholder="Nombre"
-          />
-          <button onClick={handleStartGame}>Start</button>
-          <span id="info">{info}</span>
+      <div className="game-container">
+        <div>
+          <span>🤓 Persona</span>
+          <div id="game-board-player" className="game-board" ref={gameBoardPlayerRef}>
+            {createBoard(Array.from(gameBoardPlayerRef.current?.children || []), true)}
+          </div>
         </div>
-      ) : (
-        <>
-          <div className="game-container">
-            <div>
-              <span>🤓 {playerName}</span>
-              <div id="game-board-player" className="game-board" ref={gameBoardPlayerRef}>
-                {createBoard(Array.from(gameBoardPlayerRef.current?.children || []), true)}
-              </div>
-            </div>
-            <div>
-              <span>👾 CPU</span>
-              <div
-                id="game-board-cpu"
-                className="game-board cpu-board-bg"
-                ref={gameBoardCpuRef}
-                onClick={handleCpuBoardClick}
-              >
-                {createBoard(Array.from(gameBoardCpuRef.current?.children || []), false)}
-              </div>
-            </div>
+        <div>
+          <span>👾 CPU</span>
+          <div
+            id="game-board-cpu"
+            className="game-board cpu-board-bg"
+            ref={gameBoardCpuRef}
+            onClick={handleCpuBoardClick}
+          >
+            {createBoard(Array.from(gameBoardCpuRef.current?.children || []), false)}
           </div>
-          <div>
-            <span id="info">{info}</span>
-            <div id="game-info">
-              <p>🕹️ Turno: <span id="turn-display">{turnDisplay}</span></p>
-            </div>
-            <span>Caja Persona: ⬤👌 arrastra las piezas al tablero.</span>
-            <div id="game-props" ref={shipsRef}>
-              <div className="ship" id="ship1" draggable="true" data-length="1"></div>
-              <div className="ship" id="ship2" draggable="true" data-length="2"></div>
-              <div className="ship" id="ship3" draggable="true" data-length="3"></div>
-              <div className="ship" id="ship4" draggable="true" data-length="3"></div>
-              <div className="ship" id="ship5" draggable="true" data-length="5"></div>
-            </div>
-            <div className="btn-container">
-              <div className="btn-restart" id="btn-restart" onClick={restartGame}>Restart</div>
-            </div>
-          </div>
-        </>
-      )}
+        </div>
+      </div>
+      <span id="info">{info}</span>
+      <div id="game-info">
+        <p>🕹️ Turno: <span id="turn-display">{turnDisplay}</span></p>
+      </div>
+      <span>Caja Persona: ⬤👌 arrastra las piezas al tablero.</span>
+      <div id="game-props" ref={shipsRef}>
+        <div className="ship" id="ship1" draggable="true" data-length="1"></div>
+        <div className="ship" id="ship2" draggable="true" data-length="2"></div>
+        <div className="ship" id="ship3" draggable="true" data-length="3"></div>
+        <div className="ship" id="ship4" draggable="true" data-length="3"></div>
+        <div className="ship" id="ship5" draggable="true" data-length="5"></div>
+      </div>
+      <div className="btn-container">
+        <div className="btn-restart" id="btn-restart" onClick={restartGame}>Restart</div>
+      </div>
     </div>
   );
 };

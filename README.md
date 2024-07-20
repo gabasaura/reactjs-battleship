@@ -1,8 +1,46 @@
-# React + Vite
+# Battleship Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Battleship game developed in React js.\
+Based on this [🕹️ Play](https://gabasaura.github.io/js-battleship/) [🔗 Repository](https://github.com/gabasaura/js-battleship) \
+\* Some features are still being developed. Thank you for the patience!
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [✨ Features](#features)
+- [💅 Usage](#usage)
+- [📌 Game Rules](#game-rules)
+- [🕹️ Play](#play)
+
+## Features
+
+- 10x10 game board for both player and CPU.
+- Draggable ships for easy placement.
+- Basic CPU opponent with random ship placement and targeting. *
+- Simple and intuitive UI. *
+
+## Usage
+
+- Drag and drop the ships onto the player board to position them.
+- Click on the CPU board to attack.
+- The game will alternate turns between the player and CPU until all ships of one side are sunk.
+
+## Game Rules
+
+- The game board is a 10x10 grid.
+- Each player (you and the CPU) has 5 ships of varying lengths:
+  - Amarillo (1 squares)
+  - Lila (2 squares)
+  - Indigo (3 squares)
+  - Ceruleo (3 squares)
+  - Naranja (5 squares)
+- Ships can only be placed horizontally.
+- Players take turns attacking by selecting a square on the opponent's board.
+- 🏆 The first player to sink all opponent ships wins.
+
+## Testing installation
+```bash
+npm install
+```
+```bash
+npm run dev
+```
