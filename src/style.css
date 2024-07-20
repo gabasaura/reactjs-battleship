@@ -1,0 +1,155 @@
+/* General styles */
+body {
+    background-color: #bbc1c8;
+    display: flex;
+    justify-content: center;
+    color: #383b45;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+span {
+    line-height: 2em;
+}
+
+#info {
+    text-align: center;
+    font-size: large;
+    color: rgb(255, 76, 240);
+}
+
+.wrapper {
+    max-width: 1200px;
+    place-items: center;
+    margin: 0 auto;
+}
+
+/* Container for the boards */
+.game-container {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+/* Style for game boards */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(10, 30px);
+}
+
+.game-board div {
+    border: .3px solid #383b45;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-sizing: border-box;
+
+}
+
+#game-props {
+    max-width: 620px;
+    padding: 10px;
+    margin: 0 auto;
+    border: 1px solid #383b45;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-container {
+    max-width: 640px;
+    margin: 10px auto;
+}
+
+/* Style for draggable ships */
+.ship {
+    height: 30px;
+    cursor: grab;
+    background-color: transparent;
+    /* Make ship backgrounds transparent before placement */
+}
+.ship::before {
+    content: '⬤'; /* Draggable icon (you can use any Unicode character or a background image) */
+    left: -20px; /* Adjust this value to position the icon outside the ship */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #ff0000;
+    z-index: 9999;
+}
+
+/* Ship colors and widths before placement */
+#ship1 {
+    background-color: #e1f927;
+    width: 30px;
+}
+
+#ship2 {
+    background-color: #b071f8;
+    width: 60px;
+}
+
+#ship3 {
+    background-color: #4751c3;
+    width: 90px;
+}
+
+#ship4 {
+    background-color: #01b5da;
+    width: 90px;
+}
+
+#ship5 {
+    background-color: #dd4a10;
+    width: 150px;
+}
+
+/* Button styles */
+
+.btn-restart {
+    padding: 10px;
+    background-color: darkslateblue;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Display board information */
+#game-info {
+    text-align: left;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+/* Additional styles for game outcomes */
+.cpu-board-bg {
+    background-color: #cef8f4 !important;
+}
+
+.taken {
+    background-color: #cef8f4;
+}
+
+.hit {
+    background-color: rgb(255, 76, 240);
+}
+
+.miss {
+    background-color: rgba(0, 202, 224, .8);
+}
+
+.sunk {
+    background-color: black;
+}
+.start-screen input {
+    margin: 10px;
+    padding: 5px;
+  }
+  
+  .start-screen button {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+ 
