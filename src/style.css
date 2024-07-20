@@ -122,11 +122,11 @@ span {
     margin: 0 auto;
 }
 
-/* for debuggings  
+/* for debuggings  */
 .cpu-board-bg {
     background-color: #cef8f4 !important;
 }
-*/
+
 .taken {
     background-color: #cef8f4;
 }
