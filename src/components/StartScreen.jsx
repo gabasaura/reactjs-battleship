@@ -14,14 +14,14 @@ const StartScreen = ({ onStart }) => {
   return (
     <div className="start-screen">
       <h1>OTRO BATTLESHIP: COLOR WARS</h1>
-      <form>
+      <div className='form'>
         <input
           type="text"
           placeholder="Identifícate"
           value={playerName}
           onChange={(e) => setPlayerName(e.target.value)} />
         <button onClick={handleStart}>¡A jugar!</button>
-      </form>
+      </div>
     </div>
   );
 };

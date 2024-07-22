@@ -10,16 +10,16 @@ const GameBoard = ({ playerName, onGameRestart }) => {
   const [turnDisplay, setTurnDisplay] = useState('Organiza tus barcos!');
   const [selectedShip, setSelectedShip] = useState(null);
   const [availableShips, setAvailableShips] = useState([
-    { id: 'ship1', length: 1, name: 'Amarillo' },
-    { id: 'ship2', length: 2, name: 'Lila' },
-    { id: 'ship3', length: 3, name: 'Indigo' },
-    { id: 'ship4', length: 3, name: 'Ceruleo' },
-    { id: 'ship5', length: 5, name: 'Naranja' }
+    { id: 'ship1', length: 1, color: 'Amarillo' },
+    { id: 'ship2', length: 2, color: 'Lila' },
+    { id: 'ship3', length: 3, color: 'Indigo' },
+    { id: 'ship4', length: 3, color: 'Ceruleo' },
+    { id: 'ship5', length: 5, color: 'Naranja' }
   ]);
-  const [shipsPlaced, setShipsPlaced] = useState(false); // posicionamiento barcos en board.
+  const [shipsPlaced, setShipsPlaced] = useState(false); // are ships ready?
   const [gameOver, setGameOver] = useState(false); // is game over?
 
-  const gameBoardPlayerRef = useRef(null);
+  const gameBoardPlayerRef = useRef(null); // upgrade boards
   const gameBoardCpuRef = useRef(null);
   const shipsRef = useRef(null);
 
@@ -32,13 +32,16 @@ const GameBoard = ({ playerName, onGameRestart }) => {
           data-id={i}
           className={`square ${isPlayerBoard ? 'player-board' : 'cpu-board'}`}
           onClick={isInteractable && isPlayerBoard ? handleSquareClick : null}
-          style={{ cursor: isInteractable ? 'pointer' : 'not-allowed' }} // not allowed goty
+          style={{ cursor: isInteractable ? 'pointer' : 'not-allowed' }} 
+          // not allowed good.
+          // isInteractable blocks boards: player board when ships already placed - game over - cpu ships until player ships are placed
         />
       );
     }
     return board;
   };
 
+  // placement in board
   const isValidPlacement = (length, index, squares) => {
     const row = Math.floor(index / 10);
     const col = index % 10;
@@ -81,7 +84,7 @@ const GameBoard = ({ playerName, onGameRestart }) => {
   };
 
   const placeCpuShips = () => {
-    const shipLengths = [5, 3, 3, 2, 1];
+    const shipLengths = [5, 3, 3, 2, 1]; 
     const newCpuShips = [];
     shipLengths.forEach(length => {
       let valid = false;
@@ -132,7 +135,7 @@ const GameBoard = ({ playerName, onGameRestart }) => {
         if (!gameOver) {
           cpuTurn();
         }
-      }, 800);
+      }, 500);
     }
   };
 
@@ -176,11 +179,13 @@ const GameBoard = ({ playerName, onGameRestart }) => {
             square.classList.add('sunk');
           });
           setInfo(`¡Barco hundido! WII! (  •̀ ᗜ •́  ৻) (${row}, ${col})`);
+          // upgrade, maybe a toast or sound, porque pasa muy rapido a la siguiente jugada.
         }
       }
     });
   };
 
+  // when GAME OVER
   const checkGameOver = (ships, playerName) => {
     if (ships.every(ship => ship.every(part => part.hit))) {
       setInfo(`${playerName} GANA!! (ꈍᴗꈍ)♡`);
@@ -206,6 +211,7 @@ const GameBoard = ({ playerName, onGameRestart }) => {
     }
   };
 
+  // MAYOR CAMBIO FROM JS. dnd from DOM no fue estable en react.
   const handleShipClick = (e) => {
     setSelectedShip(e.target);
   };
