@@ -1,14 +1,16 @@
 # Battleship Game
 
 A Battleship game developed in React js.\
-[🕹️ Play](https://gabasaura.github.io/reactjs-battleship/) [🔗 Repository](https://github.com/gabasaura/js-battleship) \
+Based on this JS Vanilla [🔗 Repository](https://github.com/gabasaura/js-battleship)
+
+#### [🕹️ Play](https://gabasaura.github.io/reactjs-battleship/) 
 
 ## Table of Contents
 
 - [✨ Features](#features)
 - [💅 Usage](#usage)
 - [📌 Game Rules](#game-rules)
-- [🕹️ Play](#play)
+- [🕹️ Testing installation](#testing-installation)
 
 ## Features
 
@@ -42,4 +44,11 @@ npm install
 ```
 ```bash
 npm run dev
+```
+
+```text
+ ____  _  _   __   __ _  __ _  ____ 
+(_  _)/ )( \ / _\ (  ( \(  / )/ ___)
+  )(  ) __ (/    \/    / )  ( \___ \
+ (__) \_)(_/\_/\_/\_)__)(__\_)(____/
 ```
