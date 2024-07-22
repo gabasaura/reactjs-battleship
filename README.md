@@ -1,8 +1,7 @@
 # Battleship Game
 
 A Battleship game developed in React js.\
-Based on this [🕹️ Play](https://gabasaura.github.io/js-battleship/) [🔗 Repository](https://github.com/gabasaura/js-battleship) \
-\* Some features are still being developed. Thank you for the patience!
+[🕹️ Play](https://gabasaura.github.io/reactjs-battleship/) [🔗 Repository](https://github.com/gabasaura/js-battleship) \
 
 ## Table of Contents
 
@@ -15,8 +14,8 @@ Based on this [🕹️ Play](https://gabasaura.github.io/js-battleship/) [🔗 R
 
 - 10x10 game board for both player and CPU.
 - Draggable ships for easy placement.
-- Basic CPU opponent with random ship placement and targeting. *
-- Simple and intuitive UI. *
+- Basic CPU opponent with random ship placement and targeting.
+- Simple and intuitive UI. 
 
 ## Usage
 
